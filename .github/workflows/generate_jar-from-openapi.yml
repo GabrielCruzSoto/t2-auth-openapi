@@ -36,6 +36,11 @@ jobs:
         sudo apt-get update
         sudo apt-get install maven -y
 
+    - name: Compile JAR
+      run: |
+        cd generated-project
+        mvn clean compile
+        
     - name: Publicar JAR en GitHub Packages
       run: |
         cd generated-project
@@ -47,3 +52,4 @@ jobs:
           -Dfile=target/t2authopenapi-${GITHUB_REF##*/}.jar \
           -DrepositoryId=github \
           -Durl=https://maven.pkg.github.com/GabrielCruzSoto/t2-auth-openapi  # Reemplaza OWNER y REPO
+
