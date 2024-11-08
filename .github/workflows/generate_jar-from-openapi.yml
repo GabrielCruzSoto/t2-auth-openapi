@@ -17,11 +17,11 @@ jobs:
         wget https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/7.9.0/openapi-generator-cli-7.9.0.jar -O openapi-generator-cli.jar
     - name: Generar proyecto Spring Boot
       run: |
-        java -jar openapi-generator-cli.jar generate -i src/openapi.yaml -g spring -o generated-project
-        --artifact-id: t2authopenapi
-        --group-id: com.gcs
-        --package-name: com.gcs.t2authopenapi
-        --artifact-version 1.0.0-SNAPSHOT
+        java -jar openapi-generator-cli.jar generate -i src/openapi.yaml -g spring -o generated-project \
+        --artifact-id t2authopenapi \
+        --group-id "com.gcs" \
+        --package-name "com.gcs.t2authopenapi" \
+        --artifact-version "1.0.0-SNAPSHOT"
         
     - name: Construir proyecto Spring Boot
       run: |
