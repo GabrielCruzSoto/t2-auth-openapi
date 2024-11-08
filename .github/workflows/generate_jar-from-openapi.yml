@@ -11,10 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     
     - name: Generate Spring Boot project
-      uses: OpenAPITools/openapi-generator-action@v2
+      uses: openapitools/openapi-generator-cli
       with:
         generator: spring
         input-spec: src/openapi.yaml
@@ -29,7 +29,7 @@ jobs:
         ./mvnw clean install
         
     - name: Publish to GitHub Packages
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: package
         path: generated-project/target/*.jar
