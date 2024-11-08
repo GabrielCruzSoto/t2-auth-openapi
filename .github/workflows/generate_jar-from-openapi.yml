@@ -35,13 +35,10 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install maven -y
-        
-    - name: Compile JAR
-      run: |
-        mvn clean compile
 
     - name: Publicar JAR en GitHub Packages
       run: |
+        cd generated-project
         mvn deploy:deploy-file \
           -DgroupId=com.gcs \
           -DartifactId=t2authopenapi \
