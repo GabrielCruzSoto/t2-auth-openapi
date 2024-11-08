@@ -40,7 +40,10 @@ jobs:
 #      run: |
 #        cd generated-project
 #        mvn clean compile
-        
+    - name: Publicar JAR en GitHub Packages
+      run: |    
+        cd generated-project
+        mvn clean package -Djar.finalName=t2authopenapi_${GITHUB_REF##*/}
     - name: Publicar JAR en GitHub Packages
       run: |
         cd generated-project
