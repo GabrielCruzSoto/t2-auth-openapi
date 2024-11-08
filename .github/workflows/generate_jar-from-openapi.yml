@@ -37,4 +37,4 @@ jobs:
     - name: Construir y publicar proyecto Spring Boot
       run: |
         cd generated-project
-        mvn clean deploy --settings /path/to/settings.xml
+        mvn clean deploy --settings settings.xml
