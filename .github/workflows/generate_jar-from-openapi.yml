@@ -23,10 +23,15 @@ jobs:
         --package-name "com.gcs.t2authopenapi" \
         --artifact-version "1.0.0-SNAPSHOT"
         
+    - name: Instalar Maven
+      run: |
+        sudo apt-get update
+        sudo apt-get install maven -y
+        
     - name: Construir proyecto Spring Boot
       run: |
         cd generated-project
-        ./mvnw clean install
+        mvn clean install
         
     - name: Publicar en GitHub Packages
       uses: actions/upload-artifact@v3
