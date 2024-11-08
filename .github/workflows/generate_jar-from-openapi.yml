@@ -12,7 +12,8 @@ jobs:
   generate-springboot:
     runs-on: ubuntu-latest
     env:
-      GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}  # Define la variable de entorno
+      GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
+
 
     steps:
     - uses: actions/checkout@v3
@@ -37,4 +38,4 @@ jobs:
     - name: Construir y publicar proyecto Spring Boot
       run: |
         cd generated-project
-        mvn clean deploy --settings ${PROJECT_PATH}/settings.xml
+        mvn clean deploy --settings ${GITHUB_PATH}/settings.xml
