@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: t2authopenapi
   description: API para Creación y Autenticación de Usuarios
-  version: 1.0.0
+  version: 1.0.1-Snapshot
   x-java-version: "17"
   x-maven-groupId: com.gcs
   x-maven-artifactId: t2authopenapi
