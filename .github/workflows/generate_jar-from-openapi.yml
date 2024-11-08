@@ -11,6 +11,9 @@ jobs:
 
   generate-springboot:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     env:
       GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -40,7 +43,7 @@ jobs:
 #      run: |
 #        cd generated-project
 #        mvn clean compile
-    - name: Publicar JAR en GitHub Packages
+    - name: Compile JAR
       run: |    
         cd generated-project
         mvn clean package -Djar.finalName=t2authopenapi_${GITHUB_REF##*/}
