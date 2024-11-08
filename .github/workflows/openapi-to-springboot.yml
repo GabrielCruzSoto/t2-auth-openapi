@@ -1,0 +1,35 @@
+name: OpenAPI to Spring Boot
+
+on:
+  push:
+    paths:
+      - 'openapi.yaml'
+
+jobs:
+
+  generate-springboot:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Generate Spring Boot project
+      uses: OpenAPITools/openapi-generator-action@v2
+      with:
+        generator: spring
+        input-spec: src/openapi.yaml
+        output: generated-project
+        artifact-id: t2authopenapi
+        group-id: com.gcs
+        package-name: com.gcs.t2authopenapi
+        
+    - name: Build Spring Boot project
+      run: |
+        cd generated-project
+        ./mvnw clean install
+        
+    - name: Publish to GitHub Packages
+      uses: actions/upload-artifact@v2
+      with:
+        name: package
+        path: generated-project/target/*.jar
