@@ -45,7 +45,11 @@ jobs:
       run: |    
         cd generated-project
         mvn clean package -Djar.finalName=t2authopenapi_${GITHUB_REF##*/}
-        
+ 
+    - name: Verificar autenticación en GitHub Packages
+      run: |
+        echo "${{ secrets.GITHUB_TOKEN }}" | curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -I https://maven.pkg.github.com/GabrielCruzSoto/t2-auth-openapi
+       
     - name: Publicar JAR en GitHub Packages
       run: |
         cd generated-project
@@ -59,8 +63,4 @@ jobs:
           -Dusername=${{ github.actor }} \
           -Dpassword=${{ secrets.GITHUB_TOKEN }} \
           -e
-
-    - name: Verificar autenticación en GitHub Packages
-      run: |
-        echo "${{ secrets.GITHUB_TOKEN }}" | curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -I https://maven.pkg.github.com/GabrielCruzSoto/t2-auth-openapi
 
