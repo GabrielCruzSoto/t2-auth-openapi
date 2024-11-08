@@ -17,24 +17,23 @@ jobs:
       contents: read
       packages: write
     env:
-      GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       PROJECT_PATH: generated-project
 
     steps:
     - uses: actions/checkout@v3
-    - name: Configurar credenciales de GitHub Packages
-      run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
     - name: Descargar OpenAPI Generator CLI
       run: |
         wget https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/7.9.0/openapi-generator-cli-7.9.0.jar -O openapi-generator-cli.jar
+    
     - name: Generar proyecto Spring Boot
       run: |
         java -jar openapi-generator-cli.jar generate -i src/openapi.yaml -g spring -o generated-project \
         --artifact-id t2authopenapi \
         --group-id "com.gcs" \
         --package-name "com.gcs.t2authopenapi" \
-        --artifact-version "${GITHUB_REF##*/}"  # Usar el tag como versión
+        --artifact-version "${GITHUB_REF}"  # Usar el tag como versión
         
     - name: Instalar Maven
       run: |
@@ -44,11 +43,11 @@ jobs:
     - name: Compile JAR
       run: |    
         cd generated-project
-        mvn clean package -Djar.finalName=t2authopenapi_${GITHUB_REF##*/}
+        mvn clean package -Djar.finalName=t2authopenapi_${GITHUB_REF}
  
     - name: Verificar autenticación en GitHub Packages
       run: |
-        echo "${{ secrets.GITHUB_TOKEN }}" | curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -I https://maven.pkg.github.com/GabrielCruzSoto/t2-auth-openapi
+        ls -la
        
     - name: Publicar JAR en GitHub Packages
       run: |
@@ -56,8 +55,9 @@ jobs:
         mvn deploy:deploy-file \
           -DgroupId=com.gcs \
           -DartifactId=t2authopenapi \
-          -Dversion=${GITHUB_REF##*/} \
-          -Dfile=target/t2authopenapi-${GITHUB_REF##*/}.jar \
+          -Dversion=${GITHUB_REF} \
+          -Dtag=${GITHUB_REF} \
+          -Dfile=target/t2authopenapi-${GITHUB_REF}.jar \
           -DrepositoryId=github \
           -Durl=https://maven.pkg.github.com/GabrielCruzSoto/t2-auth-openapi \
           -Dusername=${{ github.actor }} \
