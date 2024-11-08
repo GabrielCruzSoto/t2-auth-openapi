@@ -60,3 +60,7 @@ jobs:
           -Dpassword=${{ secrets.GITHUB_TOKEN }} \
           -e
 
+    - name: Verificar autenticación en GitHub Packages
+      run: |
+        echo "${{ secrets.GITHUB_TOKEN }}" | curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -I https://maven.pkg.github.com/GabrielCruzSoto/t2-auth-openapi
+
