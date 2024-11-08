@@ -12,13 +12,9 @@ jobs:
     
     steps:
     - uses: actions/checkout@v3
-    
     - name: Generate Spring Boot project
-      uses: openapitools/openapi-generator-cli
-      with:
-        generator: spring
-        input-spec: src/openapi.yaml
-        output: generated-project
+      run: |
+        openapi-generator-cli generate -i src/openapi.yaml -g spring -o generated-project
         artifact-id: t2authopenapi
         group-id: com.gcs
         package-name: com.gcs.t2authopenapi
