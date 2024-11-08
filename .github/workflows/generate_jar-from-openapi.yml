@@ -54,5 +54,7 @@ jobs:
           -Dpackaging=jar \
           -Dfile=target/t2authopenapi-${GITHUB_REF##*/}.jar \
           -DrepositoryId=github \
-          -Durl=https://maven.pkg.github.com/GabrielCruzSoto/t2-auth-openapi  # Reemplaza OWNER y REPO
+          -Durl=https://maven.pkg.github.com/GabrielCruzSoto/t2-auth-openapi \
+          -Dusername=${{ secrets.GITHUB_USERNAME }} \
+          -Dpassword=${{ secrets.GITHUB_TOKEN }}
 
