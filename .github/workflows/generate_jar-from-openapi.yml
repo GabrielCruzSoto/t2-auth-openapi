@@ -14,6 +14,8 @@ jobs:
     
     steps:
     - uses: actions/checkout@v3
+    - name: Configurar credenciales de GitHub Packages
+      run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
     - name: Descargar OpenAPI Generator CLI
       run: |
         wget https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/7.9.0/openapi-generator-cli-7.9.0.jar -O openapi-generator-cli.jar
