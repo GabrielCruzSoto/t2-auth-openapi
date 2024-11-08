@@ -11,7 +11,9 @@ jobs:
 
   generate-springboot:
     runs-on: ubuntu-latest
-    
+    env:
+      GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}  # Define la variable de entorno
+
     steps:
     - uses: actions/checkout@v3
     - name: Configurar credenciales de GitHub Packages
@@ -32,13 +34,7 @@ jobs:
         sudo apt-get update
         sudo apt-get install maven -y
         
-    - name: Construir proyecto Spring Boot
+    - name: Construir y publicar proyecto Spring Boot
       run: |
         cd generated-project
-        mvn clean install
-        
-    - name: Publicar en GitHub Packages
-      uses: actions/upload-artifact@v3
-      with:
-        name: package
-        path: generated-project/target/*.jar
+        mvn clean deploy --settings /path/to/settings.xml
