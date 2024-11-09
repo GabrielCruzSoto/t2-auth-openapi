@@ -19,21 +19,31 @@ jobs:
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       PROJECT_PATH: generated-project
+      TAG: ${GITHUB_REF##*/}
 
     steps:
     - uses: actions/checkout@v3
-
+    
     - name: Descargar OpenAPI Generator CLI
       run: |
         wget https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/7.9.0/openapi-generator-cli-7.9.0.jar -O openapi-generator-cli.jar
     
     - name: Generar proyecto Spring Boot
       run: |
-        java -jar openapi-generator-cli.jar generate -i src/openapi.yaml -g spring -o generated-project \
+        java -jar openapi-generator-cli.jar generate \
+        -i src/openapi.yaml \
+        -g spring \
+        -o generated-project \
         --artifact-id t2authopenapi \
         --group-id "com.gcs" \
         --package-name "com.gcs.t2authopenapi" \
-        --artifact-version "${GITHUB_REF}"  # Usar el tag como versión
+        --artifact-version "${TAG}" \
+        --additional-properties=useSpringBoot3=true \
+        --additional-properties=java17=true \
+        --additional-properties=useJakarta=true \
+        --additional-properties=interfaceOnly=true \
+        --additional-properties=openApiNullable=false \
+        --additional-properties=documentationProvider=springdoc
         
     - name: Instalar Maven
       run: |
@@ -43,7 +53,7 @@ jobs:
     - name: Compile JAR
       run: |    
         cd generated-project
-        mvn clean package -Djar.finalName=t2authopenapi_${GITHUB_REF}
+        mvn clean package -Djar.finalName=t2authopenapi_${TAG}
  
     - name: Verificar autenticación en GitHub Packages
       run: |
@@ -52,15 +62,13 @@ jobs:
     - name: Publicar JAR en GitHub Packages
       run: |
         cd generated-project
-        mvn deploy:deploy-file \
-          -DgroupId=com.gcs \
-          -DartifactId=t2authopenapi \
-          -Dversion=${GITHUB_REF} \
-          -Dtag=${GITHUB_REF} \
-          -Dfile=target/t2authopenapi-${GITHUB_REF}.jar \
+        mvn deploy:deploy-file -s ../settings.xml\
+          -DgroupId="com.gcs" \
+          -DartifactId="t2authopenapi" \
+          -Dversion=${TAG} \
+          -Dtag=${TAG} \
+          -Dfile=target/t2authopenapi-${TAG}.jar \
           -DrepositoryId=github \
-          -Durl=https://maven.pkg.github.com/GabrielCruzSoto/t2-auth-openapi \
-          -Dusername=${{ github.actor }} \
-          -Dpassword=${{ secrets.GITHUB_TOKEN }} \
+          -Durl="https://maven.pkg.github.com/${GITHUB_REPOSITORY}" \
           -e
 
