@@ -24,10 +24,11 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     
-    - name: Obtener el tag de Git
+    - name: Extraer TAG
       run: |
         TAG=$(echo $GITHUB_REF | sed 's/refs\/tags\///')
         echo "TAG=$TAG" >> $GITHUB_ENV
+        echo "TAG extraído: $TAG"  # Imprimir el TAG para verificar
 
     - name: Descargar OpenAPI Generator CLI
       run: |
