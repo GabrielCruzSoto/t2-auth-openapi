@@ -19,11 +19,16 @@ jobs:
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       PROJECT_PATH: generated-project
-      TAG: ${{GITHUB_REF##*/}}
+
 
     steps:
     - uses: actions/checkout@v3
     
+    - name: Obtener el tag de Git
+      run: |
+        TAG=$(echo $GITHUB_REF | sed 's/refs\/tags\///')
+        echo "TAG=$TAG" >> $GITHUB_ENV
+
     - name: Descargar OpenAPI Generator CLI
       run: |
         wget https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/7.9.0/openapi-generator-cli-7.9.0.jar -O openapi-generator-cli.jar
