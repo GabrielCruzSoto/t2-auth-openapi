@@ -81,7 +81,7 @@ jobs:
     - name: Publicar JAR en GitHub Packages
       run: |
         cd generated-project
-        mvn deploy:deploy-file -s ${GITHUB_WORKSPACE}/settings.xml\
+        mvn deploy:deploy-file \
           -DgroupId="com.gcs" \
           -DartifactId="t2authopenapi" \
           -Dversion=${TAG} \
@@ -89,6 +89,8 @@ jobs:
           -Dfile=target/t2authopenapi-${TAG}.jar \
           -DrepositoryId=github \
           -Durl="https://maven.pkg.github.com/${GITHUB_REPOSITORY}" \
+          -Dusername="${{ github.actor }}" \
+          -Dpassword="${{ secrets.GITHUB_TOKEN }}" \
           -e \
           -X
 
