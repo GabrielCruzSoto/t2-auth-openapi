@@ -2,6 +2,12 @@
 
 t2authopenapi es un proyecto que proporciona una API para la creación y autenticación de usuarios. El proyecto utiliza OpenAPI para definir la interfaz de la API y Spring Boot para implementarla.
 
+## Diagrama de flujo
+
+A continuación se muestra un diagrama que explica el flujo de la creación y publicación de un JAR en GitHub Packages:
+
+![Diagrama de flujo](Diagram-flow.jpg)
+
 ## Documentación de la API
 
 La documentación de la API se encuentra en el archivo `src/openapi.yaml`. Esta documentación describe los endpoints disponibles, los parámetros de entrada y salida, y los códigos de estado HTTP esperados.
@@ -41,13 +47,8 @@ Para utilizar la librería generada en otro proyecto, primero debes agregar el r
 
 Una vez que hayas agregado la dependencia, puedes usar las clases y métodos proporcionados por la librería en tu proyecto.
 
-
-
-## Contribución
-
-Si deseas contribuir a este proyecto, por favor, crea un pull request con tus cambios. Asegúrate de que los cambios sean compatibles con la versión de OpenAPI y Spring Boot utilizadas en este proyecto.
-
 ## Licencia
 
 Este proyecto está bajo una licencia de código abierto. Consulta el archivo de licencia para más información.
+
 
