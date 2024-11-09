@@ -90,4 +90,5 @@ jobs:
           -DrepositoryId=github \
           -Durl="https://maven.pkg.github.com/${GITHUB_REPOSITORY}" \
           -e
+          -X
 
