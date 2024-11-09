@@ -50,6 +50,13 @@ jobs:
         sudo apt-get update
         sudo apt-get install maven -y
 
+    - name: Instalar Java 17
+      run: |
+        sudo apt-get update
+        sudo apt-get install openjdk-17-jdk -y
+        java -version  # Verificar la instalación de Java
+        mvn -version   # Verificar la instalación de Maven
+
     - name: Compile JAR
       run: |    
         cd generated-project
