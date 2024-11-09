@@ -89,6 +89,6 @@ jobs:
           -Dfile=target/t2authopenapi-${TAG}.jar \
           -DrepositoryId=github \
           -Durl="https://maven.pkg.github.com/${GITHUB_REPOSITORY}" \
-          -e
+          -e \
           -X
 
