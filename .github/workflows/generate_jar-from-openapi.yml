@@ -81,7 +81,7 @@ jobs:
     - name: Publicar JAR en GitHub Packages
       run: |
         cd generated-project
-        mvn deploy:deploy-file -s ../settings.xml\
+        mvn deploy:deploy-file -s ${GITHUB_WORKSPACE}/settings.xml\
           -DgroupId="com.gcs" \
           -DartifactId="t2authopenapi" \
           -Dversion=${TAG} \
