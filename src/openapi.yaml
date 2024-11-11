@@ -37,117 +37,12 @@ paths:
                 properties:
                   token:
                     type: string
-
-  /users/create:
-    post:
-      summary: Crear nuevo usuario
-      description: Crear un nuevo usuario. Requiere rol de administrador.
-      tags:
-        - User
-      security:
-        - bearerAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                username:
-                  type: string
-                email:
-                  type: string
-                password:
-                  type: string
-                role:
-                  type: string
-                  enum: [admin, basic]
-              required:
-                - username
-                - email
-                - password
-                - role
-      responses:
-        '201':
-          description: Usuario creado exitosamente
-        '403':
-          description: No autorizado (solo administradores)
-
-  /excel/upload:
-    post:
-      summary: Cargar archivo Excel
-      description: Cargar un archivo Excel y almacenar los datos en la base de datos. Requiere rol de usuario básico o administrador.
-      tags:
-        - Data Upload
-      security:
-        - bearerAuth: []
-      requestBody:
-        required: true
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                file:
-                  type: string
-                  format: binary
-      responses:
-        '200':
-          description: Archivo subido exitosamente
-        '403':
-          description: No autorizado (solo usuarios autenticados)
-
-  /excel/data:
-    get:
-      summary: Obtener datos cargados de la base de datos
-      description: Devuelve los datos almacenados, paginados. Requiere rol de usuario básico o administrador.
-      tags:
-        - Data Retrieval
-      security:
-        - bearerAuth: []openapi: 3.0.3
-info:
-  title: t2authopenapi
-  description: API para Creación y Autenticación de Usuarios
-  version: 1.0.1-Snapshot
-  x-java-version: "17"
-  x-maven-groupId: com.gcs
-  x-maven-artifactId: t2authopenapi
-tags:
-  - name: user
-    description: Gestión de usuarios
-  - name: auth
-    description: Autenticación de usuarios
-paths:
-  /auth/login:
-    post:
-      summary: Autenticar usuario y obtener JWT
-      description: Autenticar un usuario y devolver un token JWT.
-      tags:
-        - Authentication
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                username:
-                  type: string
-                password:
-                  type: string
-              required:
-                - username
-                - password
-      responses:
-        '200':
-          description: Token JWT generado exitosamente
+        '500':
+          description: Error en el servidor
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  token:
-                    type: string
+                $ref: '#/components/schemas/ErrorRespDto'
 
   /users/create:
     post:
@@ -183,6 +78,22 @@ paths:
           description: Usuario creado exitosamente
         '403':
           description: No autorizado (solo administradores)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorRespDto'
+        '409':
+          description: Usuario ya existe
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorRespDto'
+        '500':
+          description: Error en el servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorRespDto'
 
   /excel/upload:
     post:
@@ -207,6 +118,16 @@ paths:
           description: Archivo subido exitosamente
         '403':
           description: No autorizado (solo usuarios autenticados)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorRespDto'
+        '500':
+          description: Error en el servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorRespDto'
 
   /excel/data:
     get:
@@ -251,20 +172,6 @@ paths:
                           format: date
                         sueldo:
                           type: number
-                        diasTrabajados:
-                          type: integer
-                        totalImponible:
-                          type: number
-                        afp:
-                          type: string
-                        sistemaSalud:
-                          type: string
-                        planPactado:
-                          type: string
-                        totalDescuentos:
-                          type: number
-                        sueldoLiquido:
-                          type: number
                   totalPages:
                     type: integer
                   totalElements:
@@ -275,75 +182,32 @@ paths:
                     type: integer
         '403':
           description: No autorizado (solo usuarios autenticados)
-
-components:
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
-
-      parameters:
-        - in: query
-          name: page
-          schema:
-            type: integer
-          description: Número de página
-          required: false
-        - in: query
-          name: size
-          schema:
-            type: integer
-          description: Tamaño de la página
-          required: false
-      responses:
-        '200':
-          description: Datos paginados de la base de datos
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  content:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        nombre:
-                          type: string
-                        rut:
-                          type: string
-                        fechaNacimiento:
-                          type: string
-                          format: date
-                        sueldo:
-                          type: number
-                        diasTrabajados:
-                          type: integer
-                        totalImponible:
-                          type: number
-                        afp:
-                          type: string
-                        sistemaSalud:
-                          type: string
-                        planPactado:
-                          type: string
-                        totalDescuentos:
-                          type: number
-                        sueldoLiquido:
-                          type: number
-                  totalPages:
-                    type: integer
-                  totalElements:
-                    type: integer
-                  size:
-                    type: integer
-                  number:
-                    type: integer
-        '403':
-          description: No autorizado (solo usuarios autenticados)
+                $ref: '#/components/schemas/ErrorRespDto'
+        '500':
+          description: Error en el servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorRespDto'
 
 components:
+  schemas:
+    ErrorRespDto:
+      type: object
+      required:
+        - message
+        - date
+      properties:
+        message:
+          type: string
+          description: Mensaje descriptivo del error
+        timestamp:
+          type: string
+          format: date-time
+          description: Fecha y hora del error
   securitySchemes:
     bearerAuth:
       type: http
